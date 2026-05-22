@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>bigppale (BA) — 自主 AI 工作代理</title>
+<meta name="description" content="bigppale（简称 BA）是一个会自己拆解目标、调度工具、把活干完的 AI 工作代理。你说要什么，它规划、执行、交付——你只负责拍板。"/>
+<meta name="keywords" content="bigppale,BA,AI Agent,自主代理,AI 工作流,智能体,自动化"/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:title" content="bigppale (BA) — 自主 AI 工作代理"/>
+<meta property="og:description" content="交给 BA，剩下的它自己跑完。"/>
+<meta property="og:site_name" content="bigppale"/>
+<meta property="og:locale" content="zh_CN"/>
+<meta property="og:type" content="website"/>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#f9f7f2; --bg-soft:#f3f0e8; --card:#fffefb; --ink:#1a1a1a;
+    --green:#2d4739; --green-deep:#181b19; --green-mid:#3a5a47;
+    --gray:#4a4a4a; --gray-soft:#6c6c66;
+    --gold:#8c7851; --gold-light:#a79167; --gold-bright:#c8a96a;
+    --line:rgba(45,71,57,.12); --line-soft:rgba(45,71,57,.07);
+    --serif:"Playfair Display","Noto Serif SC",Georgia,serif;
+    --cjk-serif:"Noto Serif SC","Songti SC",serif;
+    --sans:Inter,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:rgba(140,120,81,.22)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  .serif{font-family:var(--serif)}
+  .eyebrow{font-size:13px;font-weight:600;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--gold);font-family:var(--sans)}
+  h1,h2,h3{font-family:var(--serif);color:var(--green);font-weight:600;line-height:1.18}
+  .gold{color:var(--gold)}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal.in{opacity:1;transform:none}
+  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
+  .d4{transition-delay:.32s}.d5{transition-delay:.40s}
+
+  /* ---------- NAV ---------- */
+  .nav-shell{position:fixed;top:0;left:0;right:0;z-index:60;padding:18px 24px;
+    transition:padding .35s ease}
+  .nav-shell.stuck{padding:10px 24px}
+  .nav{max-width:1280px;margin:0 auto;display:flex;align-items:center;
+    justify-content:space-between;gap:24px;padding:14px 26px;border-radius:18px;
+    background:rgba(249,247,242,.72);backdrop-filter:blur(14px) saturate(1.4);
+    -webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border:1px solid transparent;transition:.35s ease}
+  .nav-shell.stuck .nav{background:rgba(252,251,247,.86);
+    border-color:var(--line-soft);box-shadow:0 12px 40px -24px rgba(45,71,57,.4)}
+  .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);
+    font-weight:700;font-size:22px;color:var(--green);letter-spacing:-.01em}
+  .brand img{width:34px;height:34px;display:block}
+  .brand .ba{font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--gold);
+    font-family:var(--sans);border:1px solid var(--gold);border-radius:5px;
+    padding:1px 6px;margin-left:2px;align-self:center}
+  .nav-links{display:flex;align-items:center;gap:34px}
+  .nav-links a{font-size:15px;color:var(--gray);font-weight:500;position:relative;
+    transition:color .2s}
+  .nav-links a:hover{color:var(--green)}
+  .nav-links .caret{font-size:10px;opacity:.6;margin-left:3px}
+  .nav-cta{display:flex;align-items:center;gap:18px}
+  .nav-cta .login{font-size:15px;color:var(--gray);font-weight:500}
+  .btn{display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--sans);font-weight:600;cursor:pointer;border:none;
+    transition:.25s ease;white-space:nowrap}
+  .btn-outline{border:1px solid var(--green);color:var(--green);background:transparent;
+    padding:11px 22px;border-radius:11px;font-size:15px}
+  .btn-outline:hover{background:var(--green);color:var(--bg)}
+  .btn-solid{background:var(--green);color:var(--bg);padding:11px 24px;
+    border-radius:11px;font-size:15px}
+  .btn-solid:hover{background:#22382c;transform:translateY(-1px);
+    box-shadow:0 14px 30px -16px rgba(45,71,57,.7)}
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+  .hamburger span{width:22px;height:2px;background:var(--green);border-radius:2px;transition:.3s}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:230px 0 130px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;z-index:-1;
+    background:radial-gradient(60% 50% at 50% 22%,rgba(140,120,81,.07),transparent 70%)}
+  .hero .eyebrow{display:block;margin-bottom:30px}
+  .hero h1{font-size:clamp(64px,11vw,138px);font-weight:700;letter-spacing:-.02em;
+    line-height:.95;margin-bottom:6px}
+  .hero .slogan{font-family:var(--cjk-serif);font-weight:700;color:var(--green);
+    font-size:clamp(30px,4.6vw,56px);line-height:1.25;margin:34px auto 0;letter-spacing:.01em}
+  .hero .lede{max-width:560px;margin:30px auto 0;color:var(--gray);font-size:18px;line-height:1.85}
+  .hero-cta{display:flex;gap:18px;justify-content:center;margin-top:46px;flex-wrap:wrap}
+  .hero-cta .btn{padding:16px 38px;font-size:16px;border-radius:13px}
+
+  /* ---------- PRODUCT UI SHOWCASE ---------- */
+  .showcase{padding:30px 0 70px}
+  .app{max-width:1180px;margin:0 auto;border-radius:18px;overflow:hidden;
+    border:1px solid var(--line);background:#fcfbf7;
+    box-shadow:0 50px 110px -50px rgba(45,71,57,.5),0 0 0 1px rgba(255,255,255,.6) inset;
+    display:grid;grid-template-columns:236px 1fr 248px;height:560px}
+  .app-pane{padding:18px 16px;overflow:hidden;font-size:13px}
+  .app-side{background:#f6f3ec;border-right:1px solid var(--line-soft);display:flex;flex-direction:column}
+  .app-side .ab{display:flex;align-items:center;gap:8px;font-family:var(--serif);
+    font-weight:700;color:var(--green);font-size:16px;padding:4px 6px 16px}
+  .app-side .ab img{width:22px;height:22px}
+  .side-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;
+    color:var(--gray);font-weight:500;cursor:default}
+  .side-item.on{background:rgba(45,71,57,.08);color:var(--green)}
+  .side-item svg{width:15px;height:15px;flex:0 0 auto;stroke:currentColor}
+  .side-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;padding:18px 10px 8px}
+  .side-conv{padding:7px 10px;color:var(--gray-soft);font-size:12.5px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:8px}
+  .side-conv:hover{background:rgba(45,71,57,.05)}
+  .side-foot{margin-top:auto;display:flex;align-items:center;gap:9px;padding:10px 6px 2px;
+    border-top:1px solid var(--line-soft)}
+  .side-foot .av{width:28px;height:28px;border-radius:50%;background:var(--green);
+    color:var(--bg);display:grid;place-items:center;font-size:12px;font-weight:600}
+  .app-center{display:flex;flex-direction:column;background:#fdfdfa}
+  .center-tabs{display:flex;gap:6px;padding:4px 4px 14px;border-bottom:1px solid var(--line-soft);align-items:center}
+  .tab{font-size:12.5px;padding:7px 13px;border-radius:8px;color:var(--gray-soft);background:#f1eee6}
+  .tab.on{background:#fff;color:var(--green);font-weight:600;box-shadow:0 1px 0 var(--line)}
+  .center-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px}
+  .center-body .pin{width:34px;height:34px;border-radius:9px;background:rgba(140,120,81,.12);
+    display:grid;place-items:center;margin-bottom:16px}
+  .center-body .pin svg{width:17px;height:17px;stroke:var(--gold)}
+  .greet{font-family:var(--cjk-serif);font-weight:600;font-size:22px;color:var(--green);margin-bottom:22px;text-align:center}
+  .composer{width:100%;max-width:520px;border:1px solid var(--line);border-radius:15px;
+    background:#fff;padding:16px 16px 12px;box-shadow:0 18px 40px -28px rgba(45,71,57,.5)}
+  .composer .ph{color:#9b9890;font-size:14px;margin-bottom:18px}
+  .composer-row{display:flex;align-items:center;justify-content:space-between}
+  .composer-tools{display:flex;gap:8px;align-items:center;color:var(--gray-soft)}
+  .composer-tools svg{width:16px;height:16px;stroke:currentColor}
+  .composer .model{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+    color:var(--green);background:rgba(45,71,57,.07);padding:5px 10px;border-radius:8px}
+  .composer .model .dot{width:7px;height:7px;border-radius:50%;background:var(--gold-bright)}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px;margin:16px auto 0}
+  .pill{font-size:12.5px;padding:6px 13px;border-radius:20px;border:1px solid var(--line);
+    color:var(--gray);background:#fff}
+  .pill.on{background:var(--green);color:var(--bg);border-color:var(--green)}
+  .app-files{background:#f6f3ec;border-left:1px solid var(--line-soft)}
+  .files-head{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
+    font-weight:600;display:flex;justify-content:space-between;margin-bottom:12px}
+  .file{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;
+    color:var(--gray);font-size:12.5px;white-space:nowrap}
+  .file.indent{padding-left:22px}
+  .file:hover{background:rgba(45,71,57,.05)}
+  .file .fi{width:13px;height:13px;flex:0 0 auto}
+  .file .fi.g{color:var(--green)}.file .fi.go{color:var(--gold)}
+
+  /* ---------- SECTION SHELL ---------- */
+  section.block{padding:110px 0}
+  .sec-head{margin-bottom:60px}
+  .sec-head .eyebrow{display:block;margin-bottom:18px}
+  .sec-head h2{font-size:clamp(34px,4.6vw,50px)}
+  .sec-head p{color:var(--gray);max-width:560px;margin-top:16px;font-size:17px}
+
+  /* who is it for */
+  .cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:34px 30px;transition:.35s cubic-bezier(.22,1,.36,1)}
+  .card:hover{transform:translateY(-6px);box-shadow:0 30px 60px -34px rgba(45,71,57,.42);border-color:rgba(45,71,57,.22)}
+  .card .ic{width:46px;height:46px;border-radius:12px;background:rgba(45,71,57,.07);
+    display:grid;place-items:center;margin-bottom:22px}
+  .card .ic svg{width:23px;height:23px;stroke:var(--green)}
+  .card h3{font-size:21px;margin-bottom:12px}
+  .card p{color:var(--gray);font-size:15px;line-height:1.8}
+
+  /* capabilities list */
+  .cap{border-top:1px solid var(--line)}
+  .cap-row{display:grid;grid-template-columns:64px 320px 1fr;gap:30px;align-items:start;
+    padding:34px 8px;border-bottom:1px solid var(--line);transition:.3s}
+  .cap-row:hover{background:rgba(140,120,81,.04)}
+  .cap-row .num{font-family:var(--serif);font-size:18px;color:var(--gold);font-style:italic;padding-top:4px}
+  .cap-row h3{font-family:var(--cjk-serif);font-size:25px;color:var(--green)}
+  .cap-row p{color:var(--gray);font-size:15.5px;line-height:1.85}
+
+  /* dark trust section */
+  .trust{background:var(--green-deep);color:#e8e6df;border-radius:0;margin:0;padding:0}
+  .trust .wrap{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding:120px 32px}
+  .trust .eyebrow{color:var(--gold-light)}
+  .trust h2{color:#f4f1e8;font-family:var(--cjk-serif);font-size:clamp(34px,4.4vw,48px);margin:18px 0 24px;line-height:1.25}
+  .trust p{color:rgba(232,230,223,.78);font-size:16.5px;line-height:1.9;max-width:480px}
+  .trust ul{list-style:none;margin-top:32px;display:flex;flex-direction:column;gap:16px}
+  .trust li{display:flex;align-items:center;gap:14px;color:rgba(232,230,223,.9);font-size:15px}
+  .trust li::before{content:"";width:22px;height:1px;background:var(--gold-light);flex:0 0 auto}
+  .trust-art{display:grid;place-items:center}
+  .trust-art svg{width:100%;max-width:420px;height:auto}
+
+  /* skill library 6 cards */
+  .cards-6{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .scard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:32px 28px;transition:.35s cubic-bezier(.22,1,.36,1)}
+  .scard:hover{transform:translateY(-6px);box-shadow:0 30px 60px -34px rgba(45,71,57,.42);border-color:rgba(45,71,57,.22)}
+  .scard .ic{width:42px;height:42px;border-radius:11px;background:rgba(140,120,81,.1);display:grid;place-items:center;margin-bottom:20px}
+  .scard .ic svg{width:21px;height:21px;stroke:var(--gold)}
+  .scard h3{font-size:19px;margin-bottom:11px}
+  .scard p{color:var(--gray);font-size:14.5px;line-height:1.78}
+  .sec-foot{margin-top:40px;color:var(--gray-soft);font-size:14px}
+
+  /* testimonials */
+  .voices{columns:4;column-gap:22px}
+  .voice{break-inside:avoid;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:22px 22px;margin-bottom:22px}
+  .voice .vh{font-family:var(--cjk-serif);font-weight:600;color:var(--green);font-size:16px;margin-bottom:10px;line-height:1.4}
+  .voice p{color:var(--gray);font-size:14px;line-height:1.75;margin-bottom:16px}
+  .voice .who{display:flex;align-items:center;gap:10px}
+  .voice .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    font-size:12px;font-weight:600;color:#fff}
+  .voice .who span{font-size:12.5px;color:var(--gray-soft)}
+
+  /* faq */
+  .faq{max-width:920px}
+  .qa{border-bottom:1px solid var(--line)}
+  .qa-q{width:100%;background:none;border:none;cursor:pointer;display:flex;
+    align-items:center;justify-content:space-between;gap:20px;padding:26px 4px;
+    font-family:var(--cjk-serif);font-weight:600;font-size:19px;color:var(--green);text-align:left}
+  .qa-q .sign{font-size:24px;color:var(--gold);flex:0 0 auto;transition:transform .3s;font-family:var(--sans);font-weight:300}
+  .qa.open .qa-q .sign{transform:rotate(45deg)}
+  .qa-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .qa-a p{color:var(--gray);font-size:15.5px;line-height:1.9;padding:0 4px 28px}
+
+  /* closing cta */
+  .closing{padding:30px 0 120px}
+  .closing-box{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#fcfbf7,#f6f3ec);
+    text-align:center;padding:90px 40px}
+  .closing-box h2{font-family:var(--cjk-serif);font-size:clamp(30px,4.2vw,46px);margin-bottom:20px}
+  .closing-box p{color:var(--gray);font-size:17px;margin-bottom:38px}
+  .closing-box .btn{padding:17px 46px;font-size:16.5px;border-radius:13px}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:80px 0 50px}
+  .foot-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:40px}
+  .foot-brand .b{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--green);margin-bottom:20px}
+  .foot-brand .b img{width:30px;height:30px}
+  .foot-brand p{color:var(--gray);font-size:14.5px;line-height:1.8;max-width:340px}
+  .foot-col h4{font-size:13px;letter-spacing:.06em;color:var(--green);font-family:var(--sans);font-weight:600;margin-bottom:18px}
+  .foot-col a{display:block;color:var(--gray);font-size:14.5px;margin-bottom:13px;transition:color .2s}
+  .foot-col a:hover{color:var(--green)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;
+    margin-top:64px;padding-top:28px;border-top:1px solid var(--line-soft);
+    color:var(--gray-soft);font-size:13px}
+
+  /* mobile menu */
+  .mobile-menu{display:none;position:fixed;inset:0;z-index:55;background:rgba(249,247,242,.97);
+    backdrop-filter:blur(8px);flex-direction:column;align-items:center;justify-content:center;gap:8px}
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{font-family:var(--cjk-serif);font-size:26px;color:var(--green);padding:14px}
+
+  @media(max-width:980px){
+    .nav-links,.nav-cta .login{display:none}
+    .hamburger{display:flex}
+    .app{grid-template-columns:1fr;height:auto}
+    .app-side,.app-files{display:none}
+    .app-center{min-height:440px}
+    .cards-3,.cards-6{grid-template-columns:1fr}
+    .cap-row{grid-template-columns:40px 1fr;gap:14px}
+    .cap-row p{grid-column:1/-1}
+    .trust .wrap{grid-template-columns:1fr;gap:40px;padding:80px 32px}
+    .trust-art{order:-1}
+    .voices{columns:2}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
+    .foot-brand{grid-column:1/-1}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 20px}
+    .hero{padding:170px 0 90px}
+    .voices{columns:1}
+    .foot-grid{grid-template-columns:1fr}
+    .foot-bottom{flex-direction:column;gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<div class="nav-shell" id="navShell">
+  <nav class="nav">
+    <a class="brand" href="#top">
+      <img src="assets/logo.svg" alt="bigppale logo"/>
+      bigppale<span class="ba">BA</span>
+    </a>
+    <div class="nav-links">
+      <a href="#capabilities">个人版<span class="caret">▾</span></a>
+      <a href="#trust">企业版</a>
+      <a href="#skills">BA 学院</a>
+      <a href="#faq">关于</a>
+    </div>
+    <div class="nav-cta">
+      <a class="login" href="#">登录 / 注册</a>
+      <a class="btn btn-outline" href="#start">立即开始</a>
+    </div>
+    <button class="hamburger" id="hb" aria-label="菜单"><span></span><span></span><span></span></button>
+  </nav>
+</div>
+<div class="mobile-menu" id="mm">
+  <a href="#capabilities">个人版</a>
+  <a href="#trust">企业版</a>
+  <a href="#skills">BA 学院</a>
+  <a href="#faq">关于</a>
+  <a href="#start">立即开始</a>
+</div>
+
+<a id="top"></a>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow reveal">Autonomous Agent · 自主代理</span>
+    <h1 class="reveal d1">bigppale</h1>
+    <div class="slogan reveal d2">交给 <span class="gold">BA</span>，剩下的<span class="gold">它自己</span>跑完</div>
+    <p class="lede reveal d3">一个会拆解目标、调度工具、把活干完的 AI 工作代理。你说要做什么，它负责规划、执行、交付——你只负责拍板。</p>
+    <div class="hero-cta reveal d4">
+      <a class="btn btn-solid" href="#start">免费开始</a>
+      <a class="btn btn-outline" href="#capabilities">查看能力</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PRODUCT UI SHOWCASE ===== -->
+<section class="showcase">
+  <div class="app reveal">
+    <!-- left -->
+    <div class="app-pane app-side">
+      <div class="ab"><img src="assets/logo.svg" alt=""/>bigppale</div>
+      <div class="side-item on"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>新建任务</div>
+      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5"/></svg>搜索</div>
+      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M12 8v4l2.5 2.5"/></svg>定时作业</div>
+      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 17.3 6.2 20l1.1-6.5L2.6 8.9l6.5-.9L12 2l2.9 6 6.5.9-4.7 4.6L17.8 20z"/></svg>我的智能体</div>
+      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v12H7l-3 3z"/></svg>历史回顾</div>
+      <div class="side-label">最近任务</div>
+      <div class="side-conv">整理上周竞品调研，输出一页纸</div>
+      <div class="side-conv">把这份 PDF 拆成 5 条小红书</div>
+      <div class="side-conv">每天早八汇总科技要闻</div>
+      <div class="side-conv">给 Q2 数据做可视化看板</div>
+      <div class="side-conv">批量改写 30 条商品文案</div>
+      <div class="side-foot"><span class="av">L</span><span style="font-size:13px;color:var(--gray)">Lin · 个人版</span></div>
+    </div>
+    <!-- center -->
+    <div class="app-pane app-center">
+      <div class="center-tabs">
+        <span class="tab on">新对话</span>
+        <span class="tab">竞品调研 · 运行中</span>
+        <span class="tab">周报汇总</span>
+      </div>
+      <div class="center-body">
+        <div class="pin"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+        <div class="greet">下午好，今天想让 BA 跑点什么？</div>
+        <div class="composer">
+          <div class="ph">描述一个目标，BA 会自己拆步骤、调工具、把结果交给你…</div>
+          <div class="composer-row">
+            <div class="composer-tools">
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14"/></svg>
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15V7a2 2 0 0 0-2-2H8L3 9v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2Z"/></svg>
+              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            </div>
+            <span class="model"><span class="dot"></span>Opus 4.7</span>
+          </div>
+        </div>
+        <div class="pills">
+          <span class="pill on">自动跑</span>
+          <span class="pill">写作</span><span class="pill">PPT</span>
+          <span class="pill">调研报告</span><span class="pill">数据分析</span>
+          <span class="pill">视频</span><span class="pill">设计</span>
+          <span class="pill">表格</span><span class="pill">编程</span>
+        </div>
+      </div>
+    </div>
+    <!-- right -->
+    <div class="app-pane app-files">
+      <div class="files-head"><span>工作区 · 产出</span><span>＋</span></div>
+      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h7l5 5v11H6z"/></svg>调研报告_v3.pdf</div>
+      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/></svg>竞品对比.xlsx</div>
+      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>一页纸总结.md</div>
+      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m4 16 5-6 4 4 3-4 4 6z"/><circle cx="8" cy="7" r="1.6"/></svg>看板_配图.png</div>
+      <div class="file indent"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6"/></svg>素材_01.md</div>
+      <div class="file indent"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6"/></svg>素材_02.md</div>
+      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 8l6 4-6 4z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>讲解_demo.mp4</div>
+      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8l3 4v12H5V8z"/></svg>会议纪要.md</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHO IS IT FOR ===== -->
+<section class="block" id="who">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Who is it for</span>
+      <h2>为谁而生</h2>
+    </div>
+    <div class="cards-3">
+      <div class="card reveal d1">
+        <div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-6m3 6v-9m3 9v-4m4.5 7.5h-15a1.5 1.5 0 0 1-1.5-1.5V5"/></svg></div>
+        <h3>被琐事拖住的多面手</h3>
+        <p>同时盯着十件事、又不想被它们困住。把可以交代清楚的活说给 BA，它替你跑完前 80%，你只在关键处做决定。</p>
+      </div>
+      <div class="card reveal d2">
+        <div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 20c0-3.5 3.6-6 8-6s8 2.5 8 6"/></svg></div>
+        <h3>一个人就是一支队伍</h3>
+        <p>独立开发者、自由职业者、内容创作者、个人创业者——不必再为人手发愁。让 BA 当你的执行团队，把想法落成结果。</p>
+      </div>
+      <div class="card reveal d3">
+        <div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m13.5-6.5-2 2m-9 9-2 2m13 0-2-2m-9-9-2-2"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+        <h3>把重复劳动外包出去</h3>
+        <p>日报周报、数据整理、格式转换、批量回复……这些不该再吃掉你的时间。设好一次，让 BA 定时自动作业，到点交付。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAPABILITIES ===== -->
+<section class="block" id="capabilities" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Core capabilities</span>
+      <h2>重新定义你的执行力</h2>
+    </div>
+    <div class="cap">
+      <div class="cap-row reveal">
+        <div class="num">01</div>
+        <h3>目标拆解与规划</h3>
+        <p>不只是聊天。给 BA 一个目标，它会自己拆成可执行的步骤、排好先后，把一句话的需求变成一条跑得通的任务链。</p>
+      </div>
+      <div class="cap-row reveal">
+        <div class="num">02</div>
+        <h3>全流程自动执行</h3>
+        <p>调研、检索、生成、整理、核对——整条流程一气呵成。BA 调用本地与云端工具自己往前推，遇到岔口才回来问你。</p>
+      </div>
+      <div class="cap-row reveal">
+        <div class="num">03</div>
+        <h3>多模型自由切换</h3>
+        <p>内置对接 Claude、GPT、Gemini、Qwen、DeepSeek 等主流模型，也支持接入自有 API。按任务挑最合适的脑子，效果与成本你说了算。</p>
+      </div>
+      <div class="cap-row reveal">
+        <div class="num">04</div>
+        <h3>工具与应用联动</h3>
+        <p>全格式读写 PDF / Excel / PPT / Word 与音视频，一键联动本地程序与外部服务，产出直接落进你的工作流，不用来回搬运。</p>
+      </div>
+      <div class="cap-row reveal">
+        <div class="num">05</div>
+        <h3>定时作业并通知</h3>
+        <p>把任务设成定时或由事件触发，跑完通过飞书、企业微信、Webhook 推送结果。让 BA 替你守着进度，无需守在电脑前。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST (dark) ===== -->
+<section class="trust" id="trust">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Control &amp; trust</span>
+      <h2>你的数据，<br/>始终你做主</h2>
+      <p>BA 支持完全本地化的运行架构：对话与文件可以只在你的设备上处理，也可以按需接入云端模型。每一步动作可见、可审计、可回放——把强大留给 AI，把掌控权留给你。</p>
+      <ul>
+        <li>端到端本地加密存储</li>
+        <li>每一步操作可见可回放</li>
+        <li>支持离线 / 断网环境运行</li>
+      </ul>
+    </div>
+    <div class="trust-art">
+      <svg viewBox="0 0 400 400" fill="none" stroke="#c8a96a" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="200" cy="200" r="150" opacity=".35"/>
+        <circle cx="200" cy="200" r="118" opacity=".5"/>
+        <circle cx="200" cy="200" r="86" opacity=".7"/>
+        <!-- isometric cube -->
+        <path d="M200 96 286 146 286 246 200 296 114 246 114 146Z" opacity=".85"/>
+        <path d="M200 96 200 196 286 246M200 196 114 246M200 196 200 296" opacity=".9"/>
+        <path d="M114 146 200 196 286 146" opacity=".9"/>
+        <!-- top diamond accent -->
+        <path d="M200 60 214 84 200 108 186 84Z" stroke="#f4ead2"/>
+        <circle cx="200" cy="84" r="4" fill="#c8a96a" stroke="none"/>
+        <!-- keyhole -->
+        <circle cx="200" cy="330" r="13"/>
+        <path d="M200 330v22" />
+        <!-- radiating lines -->
+        <path d="M200 50v18M50 200h18M350 200h-18" opacity=".5"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILL LIBRARY ===== -->
+<section class="block" id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Skill library</span>
+      <h2>技能库：挑一个专家，把问题交出去</h2>
+      <p>每个技能都是一位调好的专才。点开即用，也能组合成你自己的工作流。</p>
+    </div>
+    <div class="cards-6">
+      <div class="scard reveal d1"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a2 2 0 0 1 2-2h6v16H6a2 2 0 0 0-2 2zM20 5a2 2 0 0 0-2-2h-6v16h6a2 2 0 0 1 2 2z"/></svg></div><h3>信息检索与研报</h3><p>跨来源收集、交叉验证，按你要的结构产出一份带出处的调研报告，省去翻几十个标签页的功夫。</p></div>
+      <div class="scard reveal d2"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m4 16 5-6 4 4 3-3 4 5"/><circle cx="9" cy="9" r="1.6"/></svg></div><h3>音视频解析与生成</h3><p>把长视频、播客、会议录音转成结构化文字，也能据此生成新的图文与短视频脚本，一条龙交付。</p></div>
+      <div class="scard reveal d3"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 20V4m0 16h16M8 16l3-4 3 2 4-6"/></svg></div><h3>数据处理与可视化</h3><p>从 Excel、SQL 到现成图表，自动清洗、分析、出图，把原本要熬一晚的报表压进几分钟。</p></div>
+      <div class="scard reveal d1"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div><h3>每日聚合简报</h3><p>盯住你关心的领域，自动筛掉噪音、留下高价值信息，每天定时把一份干净简报送到你面前。</p></div>
+      <div class="scard reveal d2"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3 3 8v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8"/></svg></div><h3>自媒体内容创作</h3><p>一个主题，自动产出多平台版本：长文拆短帖、公众号转小红书、要点配图，发布前的活它替你打包。</p></div>
+      <div class="scard reveal d3"><div class="ic"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3a4 4 0 0 1 4 4v4a4 4 0 0 1-8 0V7a4 4 0 0 1 4-4ZM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>会议与语音处理</h3><p>本地转写会议与访谈，自动归纳纪要、待办与决策点，重要的内容不出本地、不外传。</p></div>
+    </div>
+    <p class="sec-foot reveal">更多技能持续上新中，敬请期待。</p>
+  </div>
+</section>
+
+<!-- ===== VOICES ===== -->
+<section class="block" id="voices">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">User voices</span>
+      <h2>来自使用者的声音</h2>
+      <p style="font-size:14px;color:var(--gray-soft)">以下为产品体验示意，正式上线后将替换为真实用户反馈。</p>
+    </div>
+    <div class="voices" id="voices"></div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="block" id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2>常见问题</h2>
+    </div>
+    <div class="faq" id="faq"></div>
+  </div>
+</section>
+
+<!-- ===== CLOSING CTA ===== -->
+<section class="closing" id="start">
+  <div class="wrap">
+    <div class="closing-box reveal">
+      <h2>把今天的活，交给 BA</h2>
+      <p>免费开始，几分钟内跑通你的第一个自主任务。</p>
+      <a class="btn btn-solid" href="#">立即免费开始</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="b"><img src="assets/logo.svg" alt=""/>bigppale</div>
+        <p>bigppale（简称 BA）是一个自主 AI 工作代理。我们希望用智能把人从重复劳动里解放出来，让每一个创造者都拥有一支随叫随到的执行团队。</p>
+      </div>
+      <div class="foot-col"><h4>产品</h4><a href="#capabilities">能力清单</a><a href="#skills">技能库</a><a href="#start">下载中心</a><a href="#trust">企业版</a></div>
+      <div class="foot-col"><h4>资源</h4><a href="#">BA 学院</a><a href="#">开发文档</a><a href="#">交流社群</a></div>
+      <div class="foot-col"><h4>法律</h4><a href="#">隐私政策</a><a href="#">服务条款</a><a href="#">安全说明</a></div>
+      <div class="foot-col"><h4>关于</h4><a href="#">产品故事</a><a href="#">团队</a><a href="#">联系我们</a><a href="#">加入我们</a></div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 bigppale (BA). All rights reserved.</span>
+      <span>Built with care.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // sticky nav
+  const navShell = document.getElementById('navShell');
+  const onScroll = () => navShell.classList.toggle('stuck', window.scrollY > 24);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  // mobile menu
+  const hb = document.getElementById('hb'), mm = document.getElementById('mm');
+  hb.addEventListener('click', () => mm.classList.toggle('open'));
+  mm.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mm.classList.remove('open')));
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // testimonials (clearly illustrative placeholders)
+  const avColors = ['#2d4739','#8c7851','#3a5a47','#a79167','#4a6b55','#9a7d4e'];
+  const voices = [
+    ['本地跑通这点太顶了','整套流程不出本地，老板和合规都点头，再也不用为数据去哪儿提心吊胆。','合规打工人 · 金融'],
+    ['一个人扛起一条线','从调研到出稿，BA 把脏活累活全包了，我只做判断，产出比之前翻了一倍。','独立创业者'],
+    ['周报终于不用我写了','设成每周五定时跑，数据自己汇总、自己排版，到点推到我群里，省心。','互联网 PM'],
+    ['做 PPT 不再熬夜','给个提纲，结构、配图、措辞它一口气搞定，我只改两页就能上会。','咨询顾问'],
+    ['合同初审快了好几倍','批量过条款、标出风险点，把律师从重复阅读里解放出来。','执业律师'],
+    ['内容产能直接拉满','一个选题自动拆成多平台版本，公众号转小红书顺手就出，更新效率翻倍。','日更创作者'],
+    ['财务月结轻松了','凭证整理、表格生成、异常标注一条龙，月底不再加班到深夜。','企业会计'],
+    ['会议纪要一键搞定','开会全程转写，结束就有纪要和待办，决策点一个不落。','项目负责人'],
+    ['本地语音处理很安心','访谈录音在本机转写归纳，敏感内容不出门，效率还在线。','研究学者'],
+    ['多模型随手切','简单任务用便宜的，硬骨头切高配，效果和成本我自己拿捏。','全栈开发者'],
+    ['数据看板自动出','把表格丢进去，清洗分析出图全自动，分析的时间省下大半。','数据分析师'],
+    ['团队提效神器','把重复流程交给定时作业，团队腾出手做真正重要的事。','效率极客'],
+  ];
+  const vc = document.getElementById('voices');
+  voices.forEach((v,i) => {
+    const name = v[2].split(' · ')[0];
+    const el = document.createElement('div');
+    el.className = 'voice';
+    el.innerHTML = `<div class="vh">${v[0]}</div><p>${v[1]}</p>
+      <div class="who"><span class="av" style="background:${avColors[i%avColors.length]}">${name.slice(0,1)}</span><span>${v[2]}</span></div>`;
+    vc.appendChild(el);
+  });
+
+  // faq accordion
+  const faqs = [
+    ['BA 到底能替我做什么？','给 BA 一个目标，它会自己拆步骤、调用工具、把任务一路跑到交付：从查资料、写文档、做表格、出图，到定时汇总和推送。你描述要什么，它负责怎么做。'],
+    ['和普通 AI 聊天助手有什么不同？','聊天助手停在"回答你"，BA 会"替你做"。它能连续执行多步任务、调用外部工具与本地程序，并在跑的过程中自己纠错，遇到关键决策才回来找你。'],
+    ['支持哪些 AI 模型？','内置对接 Claude、GPT、Gemini、Qwen、DeepSeek 等主流模型，也支持接入你自己的 API 或本地模型。每个任务都能单独挑模型，平衡效果与成本。'],
+    ['我的数据安全吗？','BA 支持完全本地化的运行架构，对话与文件可只在你的设备上处理；接入云端时也只传递必要内容。每一步操作可见、可审计、可回放。'],
+    ['可以定时自动跑吗？','可以。把任务设成定时或由事件触发，BA 会在后台自动作业，跑完通过飞书、企业微信或 Webhook 把结果推送给你。'],
+    ['怎么开始使用？','点击"免费开始"创建账号即可。新用户有免费额度，几分钟就能跑通你的第一个自主任务，无需信用卡。'],
+  ];
+  const fc = document.getElementById('faq');
+  faqs.forEach((f) => {
+    const item = document.createElement('div');
+    item.className = 'qa';
+    item.innerHTML = `<button class="qa-q">${f[0]}<span class="sign">+</span></button>
+      <div class="qa-a"><p>${f[1]}</p></div>`;
+    fc.appendChild(item);
+    const btn = item.querySelector('.qa-q'), ans = item.querySelector('.qa-a');
+    btn.addEventListener('click', () => {
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.qa.open').forEach(o => { o.classList.remove('open'); o.querySelector('.qa-a').style.maxHeight = null; });
+      if (!open){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+    });
+  });
+</script>
+</body>
+</html>

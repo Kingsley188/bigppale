@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>BigApple — 宣传页 A5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&amp;family=Inter:wght@400;500;600&amp;family=Noto+Serif+SC:wght@500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f9f7f2;
+    --card: #fffefb;
+    --ink: #1a1a1a;
+    --green: #2d4739;
+    --green-deep: #181b19;
+    --green-mid: #3a5a47;
+    --gray: #4a4a4a;
+    --gray-soft: #6c6c66;
+    --gold: #8c7851;
+    --gold-light: #a79167;
+    --line: rgba(45,71,57,.12);
+    --serif: "Playfair Display","Noto Serif SC",Georgia,serif;
+    --cjk-serif: "Noto Serif SC","Songti SC",serif;
+    --sans: Inter,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+
+  @page {
+    size: 148mm 210mm;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 148mm;
+    height: 210mm;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 148mm;
+    height: 210mm;
+    padding: 12mm 14mm;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background: var(--bg);
+  }
+
+  .page-a { page-break-after: always; }
+
+  /* ===== A 面 ===== */
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8mm;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .brand img {
+    height: 16px;
+    width: auto;
+  }
+
+  .brand-name {
+    font-family: var(--serif);
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.01em;
+  }
+
+  .brand-ba {
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: .18em;
+    color: var(--gold);
+    font-family: var(--sans);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 0px 4px;
+    margin-left: 2px;
+  }
+
+  .brand-sub {
+    font-size: 7pt;
+    color: var(--gray-soft);
+    font-weight: 500;
+    letter-spacing: .04em;
+  }
+
+  .hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4mm 0;
+  }
+
+  .hero-tagline {
+    font-family: var(--cjk-serif);
+    font-size: 20pt;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1.35;
+    letter-spacing: .02em;
+    margin-bottom: 4mm;
+  }
+
+  .hero-sub {
+    font-size: 8.5pt;
+    color: var(--gray);
+    line-height: 1.65;
+    max-width: 100mm;
+  }
+
+  .divider {
+    width: 28mm;
+    height: 1px;
+    background: var(--line);
+    margin: 5mm auto;
+  }
+
+  .caps-section {
+    padding: 0 2mm;
+  }
+
+  .caps-title {
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--sans);
+    margin-bottom: 3.5mm;
+  }
+
+  .caps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5mm 8mm;
+  }
+
+  .cap-item {
+    display: flex;
+    align-items: baseline;
+    gap: 2mm;
+  }
+
+  .cap-num {
+    font-family: var(--serif);
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--green);
+    opacity: .35;
+    flex-shrink: 0;
+    width: 7mm;
+  }
+
+  .cap-text {
+    font-size: 8.5pt;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .cap-item:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 6mm;
+    margin-top: auto;
+    border-top: 1px solid var(--line);
+  }
+
+  .bottom-url {
+    font-size: 7.5pt;
+    color: var(--gray-soft);
+    letter-spacing: .05em;
+  }
+
+  .bottom-url span {
+    font-weight: 600;
+    color: var(--green);
+    font-size: 8pt;
+  }
+
+  .qr-box {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+  }
+
+  .qr-placeholder {
+    width: 16mm;
+    height: 16mm;
+    border: 1.5px dashed var(--line);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-soft);
+    font-size: 6pt;
+  }
+
+  .qr-label {
+    font-size: 6.5pt;
+    color: var(--gray-soft);
+    line-height: 1.5;
+    max-width: 18mm;
+  }
+
+  /* ===== B 面 ===== */
+
+  .page-b-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 5mm;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 5mm;
+  }
+
+  .page-b-title {
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--sans);
+  }
+
+  .page-b-subtitle {
+    font-size: 6.5pt;
+    color: var(--gray-soft);
+    font-weight: 400;
+  }
+
+  .showcase-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 3.5mm;
+  }
+
+  .s-card {
+    background: var(--card);
+    border-radius: 3mm;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .s-cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .s-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .s-body {
+    padding: 2mm 2.5mm;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .s-tag {
+    font-size: 5.5pt;
+    font-weight: 600;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-family: var(--sans);
+    margin-bottom: 0.5mm;
+  }
+
+  .s-title {
+    font-family: var(--cjk-serif);
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: var(--green);
+    line-height: 1.3;
+    margin-bottom: 1mm;
+  }
+
+  .s-desc {
+    font-size: 6pt;
+    color: var(--gray-soft);
+    line-height: 1.45;
+  }
+
+  .page-b-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 4mm;
+    margin-top: auto;
+    border-top: 1px solid var(--line);
+  }
+
+  .b-brand {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+
+  .b-brand img {
+    height: 11px;
+    opacity: .5;
+  }
+
+  .b-brand-text {
+    font-family: var(--serif);
+    font-size: 8pt;
+    font-weight: 600;
+    color: var(--green);
+    opacity: .5;
+  }
+
+  .b-qr {
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+
+  .b-qr-box {
+    width: 12mm;
+    height: 12mm;
+    border: 1.5px dashed var(--line);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5pt;
+    color: var(--gray-soft);
+  }
+
+  .b-url {
+    font-size: 6.5pt;
+    color: var(--gray-soft);
+  }
+
+  /* ===== 屏幕预览辅助 ===== */
+  @media screen {
+    body {
+      width: auto;
+      height: auto;
+      background: #e0ddd6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10mm;
+      padding: 10mm 0;
+    }
+    .page {
+      box-shadow: 0 4px 24px rgba(0,0,0,.12);
+    }
+  }
+
+  @media print {
+    body {
+      width: 148mm;
+      height: auto;
+      background: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== A 面（正面） ==================== -->
+<div class="page page-a">
+
+  <div class="top-bar">
+    <div class="brand">
+      <img src="assets/ba-mark-black-512.png" alt="BA"/>
+      <span class="brand-name">BigApple</span>
+      <span class="brand-ba">BA</span>
+    </div>
+    <span class="brand-sub">自主 AI 工作 Agent</span>
+  </div>
+
+  <div class="hero">
+    <h1 class="hero-tagline">交给 BA，<br/>剩下的它自己跑完</h1>
+    <p class="hero-sub">BigApple 是一个会自己拆解目标、调度工具、把活干完的 AI 工作代理。<br/>你说要什么，它规划、执行、交付——你只负责拍板。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="caps-section">
+    <div class="caps-title">Core Capabilities</div>
+    <div class="caps-grid">
+      <div class="cap-item"><span class="cap-num">01</span><span class="cap-text">目标拆解与规划</span></div>
+      <div class="cap-item"><span class="cap-num">02</span><span class="cap-text">全流程自动执行</span></div>
+      <div class="cap-item"><span class="cap-num">03</span><span class="cap-text">多模型自由切换</span></div>
+      <div class="cap-item"><span class="cap-num">04</span><span class="cap-text">工具与应用联动</span></div>
+      <div class="cap-item"><span class="cap-num">05</span><span class="cap-text">定时作业并通知</span></div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-url"><span>bigapple.store</span></div>
+    <div class="qr-box">
+      <div class="qr-label">扫码<br/>了解更多</div>
+      <div class="qr-placeholder">QR</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== B 面（背面） ==================== -->
+<div class="page">
+
+  <div class="page-b-header">
+    <span class="page-b-title">作品集 · Showcase</span>
+    <span class="page-b-subtitle">精选案例，均由 BA 协助完成</span>
+  </div>
+
+  <div class="showcase-grid">
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/starter-a-reimburse.jpg" alt="报销凭证"/></div>
+      <div class="s-body">
+        <span class="s-tag">技能演示</span>
+        <h3 class="s-title">落地范例 A · 报销凭证</h3>
+        <p class="s-desc">把购物截图变成 Excel 交付物的前后对比技能范例。</p>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/starter-b-xhs.jpg" alt="小红书增长"/></div>
+      <div class="s-body">
+        <span class="s-tag">技能演示</span>
+        <h3 class="s-title">落地范例 B · 小红书增长</h3>
+        <p class="s-desc">社媒增长技能范例：低互动笔记变成爆款小红书内容。</p>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/douyin-breakdown-v2.jpg" alt="抖音短剧拆解"/></div>
+      <div class="s-body">
+        <span class="s-tag">视频解析</span>
+        <h3 class="s-title">抖音短剧拆解 v2</h3>
+        <p class="s-desc">AI 短剧逐场拆解，含抽帧与叙事结构分析。</p>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/openclaw-deck.jpg" alt="OpenClaw 课程"/></div>
+      <div class="s-body">
+        <span class="s-tag">课程材料</span>
+        <h3 class="s-title">OpenClaw AI 课程讲义</h3>
+        <p class="s-desc">OpenClaw AI 智能体课程 13 页讲义，涵盖能力、演示与应用。</p>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/news-byd-pingshan.png" alt="BYD 新闻核查"/></div>
+      <div class="s-body">
+        <span class="s-tag">新闻核查</span>
+        <h3 class="s-title">比亚迪坪山起火 · 一手信源核查</h3>
+        <p class="s-desc">新闻一手信源台演示：现场视频、官方通报、公司回应与媒体转述分级为证据等级。</p>
+      </div>
+    </div>
+
+    <div class="s-card">
+      <div class="s-cover"><img src="assets/showcase/shidai-yinji.jpg" alt="时代隐记"/></div>
+      <div class="s-body">
+        <span class="s-tag">视频解析</span>
+        <h3 class="s-title">《时代隐记》视频解析</h3>
+        <p class="s-desc">东北文学短片公开解析：关键帧、脚本结构、时间码与包装笔记。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="page-b-footer">
+    <div class="b-brand">
+      <img src="assets/ba-mark-black-512.png" alt="BA"/>
+      <span class="b-brand-text">BigApple</span>
+    </div>
+    <div class="b-qr">
+      <span class="b-url">bigapple.store</span>
+      <div class="b-qr-box">QR</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

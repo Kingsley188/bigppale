@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>bigppale (BA) — 自主 AI 工作代理</title>
-<meta name="description" content="bigppale（简称 BA）是一个会自己拆解目标、调度工具、把活干完的 AI 工作代理。你说要什么，它规划、执行、交付——你只负责拍板。"/>
-<meta name="keywords" content="bigppale,BA,AI Agent,自主代理,AI 工作流,智能体,自动化"/>
+<title>BigApple (BA) — 自主 AI 工作代理</title>
+<meta name="description" content="BigApple（简称 BA）是一个会自己拆解目标、调度工具、把活干完的 AI 工作代理。你说要什么，它规划、执行、交付——你只负责拍板。"/>
+<meta name="keywords" content="BigApple,BA,AI Agent,自主代理,AI 工作流,智能体,自动化"/>
 <meta name="robots" content="index, follow"/>
-<meta property="og:title" content="bigppale (BA) — 自主 AI 工作代理"/>
+<meta property="og:title" content="BigApple (BA) — 自主 AI 工作代理"/>
 <meta property="og:description" content="交给 BA，剩下的它自己跑完。"/>
-<meta property="og:site_name" content="bigppale"/>
+<meta property="og:site_name" content="BigApple"/>
 <meta property="og:locale" content="zh_CN"/>
 <meta property="og:type" content="website"/>
-<link rel="icon" type="image/svg+xml" href="assets/logo.svg"/>
+<link rel="icon" type="image/svg+xml" href="assets/ba-logo.svg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&amp;family=Inter:wght@400;500;600&amp;family=Noto+Serif+SC:wght@500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --bg:#f9f7f2; --bg-soft:#f3f0e8; --card:#fffefb; --ink:#1a1a1a;
@@ -27,6 +27,7 @@
     --cjk-serif:"Noto Serif SC","Songti SC",serif;
     --sans:Inter,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
     --maxw:1200px;
+    --ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -35,13 +36,14 @@
     text-rendering:optimizeLegibility;overflow-x:hidden}
   ::selection{background:rgba(140,120,81,.22)}
   a{color:inherit;text-decoration:none}
+  p{text-wrap:pretty}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
   .serif{font-family:var(--serif)}
   .eyebrow{font-size:13px;font-weight:600;letter-spacing:.22em;
     text-transform:uppercase;color:var(--gold);font-family:var(--sans)}
-  h1,h2,h3{font-family:var(--serif);color:var(--green);font-weight:600;line-height:1.18}
+  h1,h2,h3{font-family:var(--serif);color:var(--green);font-weight:600;line-height:1.18;text-wrap:balance}
   .gold{color:var(--gold)}
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
   .reveal.in{opacity:1;transform:none}
   .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
   .d4{transition-delay:.32s}.d5{transition-delay:.40s}
@@ -59,7 +61,7 @@
     border-color:var(--line-soft);box-shadow:0 12px 40px -24px rgba(45,71,57,.4)}
   .brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);
     font-weight:700;font-size:22px;color:var(--green);letter-spacing:-.01em}
-  .brand img{width:34px;height:34px;display:block}
+  .brand img{height:24px;width:auto;display:block}
   .brand .ba{font-size:11px;font-weight:600;letter-spacing:.18em;color:var(--gold);
     font-family:var(--sans);border:1px solid var(--gold);border-radius:5px;
     padding:1px 6px;margin-left:2px;align-self:center}
@@ -96,61 +98,18 @@
   .hero-cta{display:flex;gap:18px;justify-content:center;margin-top:46px;flex-wrap:wrap}
   .hero-cta .btn{padding:16px 38px;font-size:16px;border-radius:13px}
 
-  /* ---------- PRODUCT UI SHOWCASE ---------- */
-  .showcase{padding:30px 0 70px}
-  .app{max-width:1180px;margin:0 auto;border-radius:18px;overflow:hidden;
+  /* ---------- PRODUCT SHOWCASE ---------- */
+  .showcase{padding:24px 0 80px}
+  .shot-frame{max-width:1180px;margin:0 auto;border-radius:18px;overflow:hidden;
     border:1px solid var(--line);background:#fcfbf7;
-    box-shadow:0 50px 110px -50px rgba(45,71,57,.5),0 0 0 1px rgba(255,255,255,.6) inset;
-    display:grid;grid-template-columns:236px 1fr 248px;height:560px}
-  .app-pane{padding:18px 16px;overflow:hidden;font-size:13px}
-  .app-side{background:#f6f3ec;border-right:1px solid var(--line-soft);display:flex;flex-direction:column}
-  .app-side .ab{display:flex;align-items:center;gap:8px;font-family:var(--serif);
-    font-weight:700;color:var(--green);font-size:16px;padding:4px 6px 16px}
-  .app-side .ab img{width:22px;height:22px}
-  .side-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;
-    color:var(--gray);font-weight:500;cursor:default}
-  .side-item.on{background:rgba(45,71,57,.08);color:var(--green)}
-  .side-item svg{width:15px;height:15px;flex:0 0 auto;stroke:currentColor}
-  .side-label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--gold);font-weight:600;padding:18px 10px 8px}
-  .side-conv{padding:7px 10px;color:var(--gray-soft);font-size:12.5px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:8px}
-  .side-conv:hover{background:rgba(45,71,57,.05)}
-  .side-foot{margin-top:auto;display:flex;align-items:center;gap:9px;padding:10px 6px 2px;
-    border-top:1px solid var(--line-soft)}
-  .side-foot .av{width:28px;height:28px;border-radius:50%;background:var(--green);
-    color:var(--bg);display:grid;place-items:center;font-size:12px;font-weight:600}
-  .app-center{display:flex;flex-direction:column;background:#fdfdfa}
-  .center-tabs{display:flex;gap:6px;padding:4px 4px 14px;border-bottom:1px solid var(--line-soft);align-items:center}
-  .tab{font-size:12.5px;padding:7px 13px;border-radius:8px;color:var(--gray-soft);background:#f1eee6}
-  .tab.on{background:#fff;color:var(--green);font-weight:600;box-shadow:0 1px 0 var(--line)}
-  .center-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 28px}
-  .center-body .pin{width:34px;height:34px;border-radius:9px;background:rgba(140,120,81,.12);
-    display:grid;place-items:center;margin-bottom:16px}
-  .center-body .pin svg{width:17px;height:17px;stroke:var(--gold)}
-  .greet{font-family:var(--cjk-serif);font-weight:600;font-size:22px;color:var(--green);margin-bottom:22px;text-align:center}
-  .composer{width:100%;max-width:520px;border:1px solid var(--line);border-radius:15px;
-    background:#fff;padding:16px 16px 12px;box-shadow:0 18px 40px -28px rgba(45,71,57,.5)}
-  .composer .ph{color:#9b9890;font-size:14px;margin-bottom:18px}
-  .composer-row{display:flex;align-items:center;justify-content:space-between}
-  .composer-tools{display:flex;gap:8px;align-items:center;color:var(--gray-soft)}
-  .composer-tools svg{width:16px;height:16px;stroke:currentColor}
-  .composer .model{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
-    color:var(--green);background:rgba(45,71,57,.07);padding:5px 10px;border-radius:8px}
-  .composer .model .dot{width:7px;height:7px;border-radius:50%;background:var(--gold-bright)}
-  .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:520px;margin:16px auto 0}
-  .pill{font-size:12.5px;padding:6px 13px;border-radius:20px;border:1px solid var(--line);
-    color:var(--gray);background:#fff}
-  .pill.on{background:var(--green);color:var(--bg);border-color:var(--green)}
-  .app-files{background:#f6f3ec;border-left:1px solid var(--line-soft)}
-  .files-head{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
-    font-weight:600;display:flex;justify-content:space-between;margin-bottom:12px}
-  .file{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:8px;
-    color:var(--gray);font-size:12.5px;white-space:nowrap}
-  .file.indent{padding-left:22px}
-  .file:hover{background:rgba(45,71,57,.05)}
-  .file .fi{width:13px;height:13px;flex:0 0 auto}
-  .file .fi.g{color:var(--green)}.file .fi.go{color:var(--gold)}
+    box-shadow:0 50px 110px -50px rgba(45,71,57,.5),0 0 0 1px rgba(255,255,255,.6) inset}
+  .shot-frame img{display:block;width:100%;height:auto;transition:opacity .35s var(--ease)}
+  .shot-toggle{display:flex;justify-content:center;gap:8px;margin:0 auto 18px}
+  .st-btn{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--gray);
+    background:var(--card);border:1px solid var(--line);padding:8px 18px;border-radius:10px;
+    cursor:pointer;transition:color .25s var(--ease),background .25s var(--ease),border-color .25s var(--ease)}
+  .st-btn:hover{color:var(--green);border-color:rgba(45,71,57,.25)}
+  .st-btn.on{background:var(--green);color:var(--bg);border-color:var(--green)}
 
   /* ---------- SECTION SHELL ---------- */
   section.block{padding:110px 0}
@@ -201,15 +160,26 @@
   .scard p{color:var(--gray);font-size:14.5px;line-height:1.78}
   .sec-foot{margin-top:40px;color:var(--gray-soft);font-size:14px}
 
-  /* testimonials */
-  .voices{columns:4;column-gap:22px}
-  .voice{break-inside:avoid;background:var(--card);border:1px solid var(--line);
-    border-radius:14px;padding:22px 22px;margin-bottom:22px}
+  /* testimonials · marquee wall */
+  .voices-wall{position:relative;display:flex;flex-direction:column;gap:22px;padding:4px 0;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+  .mq-row{overflow:hidden}
+  .mq-track{display:flex;gap:22px;width:max-content;will-change:transform}
+  .mq-row:hover .mq-track{animation-play-state:paused}
+  .mq-r1 .mq-track{animation:mq-left 70s linear infinite}
+  .mq-r2 .mq-track{animation:mq-right 88s linear infinite}
+  .mq-r3 .mq-track{animation:mq-left 104s linear infinite}
+  @keyframes mq-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes mq-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+  .voice{flex:0 0 clamp(284px,26vw,344px);background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:22px 22px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .voice:hover{border-color:rgba(45,71,57,.22);box-shadow:0 22px 46px -30px rgba(45,71,57,.4);transform:translateY(-3px)}
   .voice .vh{font-family:var(--cjk-serif);font-weight:600;color:var(--green);font-size:16px;margin-bottom:10px;line-height:1.4}
   .voice p{color:var(--gray);font-size:14px;line-height:1.75;margin-bottom:16px}
   .voice .who{display:flex;align-items:center;gap:10px}
   .voice .av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
-    font-size:12px;font-weight:600;color:#fff}
+    font-size:12px;font-weight:600;color:#fff;flex:0 0 auto}
   .voice .who span{font-size:12.5px;color:var(--gray-soft)}
 
   /* faq */
@@ -223,6 +193,39 @@
   .qa-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
   .qa-a p{color:var(--gray);font-size:15.5px;line-height:1.9;padding:0 4px 28px}
 
+  /* showcase gallery */
+  .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .gcard{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden;
+    display:flex;flex-direction:column;transition:.35s cubic-bezier(.22,1,.36,1)}
+  .gcard:hover{transform:translateY(-6px);box-shadow:0 30px 60px -34px rgba(45,71,57,.42);border-color:rgba(45,71,57,.22)}
+  .gcard .cover{aspect-ratio:16/10;overflow:hidden;background:#eceae3}
+  .gcard .cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+  .gcard:hover .cover img{transform:scale(1.06)}
+  .gcard .body{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
+  .gcard .gmeta{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+  .gcard .gtag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+  .gcard .gdate{font-size:12px;color:var(--gray-soft)}
+  .gcard h3{font-family:var(--cjk-serif);font-size:18px;color:var(--green);line-height:1.42;margin-bottom:9px}
+  .gcard p{color:var(--gray);font-size:14px;line-height:1.72;flex:1}
+  .gcard .gfoot{display:flex;align-items:center;gap:15px;margin-top:16px;padding-top:14px;
+    border-top:1px solid var(--line-soft);color:var(--gray-soft);font-size:12.5px}
+  .gcard .gfoot .o{margin-left:auto;color:var(--green);font-weight:600}
+  .gallery-more{margin-top:46px;text-align:center}
+  .gallery-more .btn{padding:14px 34px;border-radius:12px;font-size:15px}
+
+  /* origin / about */
+  .origin .lead{max-width:680px;color:var(--gray);font-size:18px;line-height:1.9;margin-top:4px}
+  .origin .lead strong{color:var(--green);font-weight:600}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin:54px 0 0}
+  .stat{border-top:2px solid var(--gold);padding-top:18px}
+  .stat .n{font-family:var(--serif);font-size:clamp(40px,5vw,60px);font-weight:700;color:var(--green);line-height:1;font-variant-numeric:tabular-nums}
+  .stat .l{color:var(--gray);font-size:15px;margin-top:8px}
+  .values{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px}
+  .val{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 20px;transition:.35s cubic-bezier(.22,1,.36,1)}
+  .val:hover{transform:translateY(-5px);box-shadow:0 26px 52px -34px rgba(45,71,57,.4);border-color:rgba(45,71,57,.2)}
+  .val .en{font-family:var(--serif);font-style:italic;color:var(--gold);font-size:15px;margin-bottom:8px}
+  .val h4{font-family:var(--cjk-serif);font-size:18px;color:var(--green);font-weight:600}
+
   /* closing cta */
   .closing{padding:30px 0 120px}
   .closing-box{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#fcfbf7,#f6f3ec);
@@ -235,7 +238,7 @@
   footer{border-top:1px solid var(--line);padding:80px 0 50px}
   .foot-grid{display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:40px}
   .foot-brand .b{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--green);margin-bottom:20px}
-  .foot-brand .b img{width:30px;height:30px}
+  .foot-brand .b img{height:22px;width:auto}
   .foot-brand p{color:var(--gray);font-size:14.5px;line-height:1.8;max-width:340px}
   .foot-col h4{font-size:13px;letter-spacing:.06em;color:var(--green);font-family:var(--sans);font-weight:600;margin-bottom:18px}
   .foot-col a{display:block;color:var(--gray);font-size:14.5px;margin-bottom:13px;transition:color .2s}
@@ -250,25 +253,30 @@
   .mobile-menu.open{display:flex}
   .mobile-menu a{font-family:var(--cjk-serif);font-size:26px;color:var(--green);padding:14px}
 
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+    .reveal{opacity:1 !important;transform:none !important}
+    html{scroll-behavior:auto}
+  }
   @media(max-width:980px){
     .nav-links,.nav-cta .login{display:none}
     .hamburger{display:flex}
-    .app{grid-template-columns:1fr;height:auto}
-    .app-side,.app-files{display:none}
-    .app-center{min-height:440px}
     .cards-3,.cards-6{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .values{grid-template-columns:1fr 1fr}
+    .gallery-grid{grid-template-columns:repeat(2,1fr)}
     .cap-row{grid-template-columns:40px 1fr;gap:14px}
     .cap-row p{grid-column:1/-1}
     .trust .wrap{grid-template-columns:1fr;gap:40px;padding:80px 32px}
     .trust-art{order:-1}
-    .voices{columns:2}
     .foot-grid{grid-template-columns:1fr 1fr;gap:32px}
     .foot-brand{grid-column:1/-1}
   }
   @media(max-width:560px){
     .wrap{padding:0 20px}
+    .values,.stats{grid-template-columns:1fr}
+    .gallery-grid{grid-template-columns:1fr}
     .hero{padding:170px 0 90px}
-    .voices{columns:1}
     .foot-grid{grid-template-columns:1fr}
     .foot-bottom{flex-direction:column;gap:10px}
   }
@@ -280,14 +288,14 @@
 <div class="nav-shell" id="navShell">
   <nav class="nav">
     <a class="brand" href="#top">
-      <img src="assets/logo.svg" alt="bigppale logo"/>
-      bigppale<span class="ba">BA</span>
+      <img src="assets/ba-mark-black-512.png" alt="BigApple logo"/>
+      BigApple
     </a>
     <div class="nav-links">
       <a href="#capabilities">个人版<span class="caret">▾</span></a>
       <a href="#trust">企业版</a>
-      <a href="#skills">BA 学院</a>
-      <a href="#faq">关于</a>
+      <a href="#skills">技能库</a>
+      <a href="#origin">关于</a>
     </div>
     <div class="nav-cta">
       <a class="login" href="#">登录 / 注册</a>
@@ -299,9 +307,8 @@
 <div class="mobile-menu" id="mm">
   <a href="#capabilities">个人版</a>
   <a href="#trust">企业版</a>
-  <a href="#skills">BA 学院</a>
-  <a href="#faq">关于</a>
-  <a href="#start">立即开始</a>
+  <a href="#skills">技能库</a>
+  <a href="#origin">关于</a>
 </div>
 
 <a id="top"></a>
@@ -310,7 +317,7 @@
 <header class="hero">
   <div class="wrap">
     <span class="eyebrow reveal">Autonomous Agent · 自主代理</span>
-    <h1 class="reveal d1">bigppale</h1>
+    <h1 class="reveal d1">BigApple</h1>
     <div class="slogan reveal d2">交给 <span class="gold">BA</span>，剩下的<span class="gold">它自己</span>跑完</div>
     <p class="lede reveal d3">一个会拆解目标、调度工具、把活干完的 AI 工作代理。你说要做什么，它负责规划、执行、交付——你只负责拍板。</p>
     <div class="hero-cta reveal d4">
@@ -322,65 +329,12 @@
 
 <!-- ===== PRODUCT UI SHOWCASE ===== -->
 <section class="showcase">
-  <div class="app reveal">
-    <!-- left -->
-    <div class="app-pane app-side">
-      <div class="ab"><img src="assets/logo.svg" alt=""/>bigppale</div>
-      <div class="side-item on"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>新建任务</div>
-      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5"/></svg>搜索</div>
-      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M12 8v4l2.5 2.5"/></svg>定时作业</div>
-      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 17.3 6.2 20l1.1-6.5L2.6 8.9l6.5-.9L12 2l2.9 6 6.5.9-4.7 4.6L17.8 20z"/></svg>我的智能体</div>
-      <div class="side-item"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4h16v12H7l-3 3z"/></svg>历史回顾</div>
-      <div class="side-label">最近任务</div>
-      <div class="side-conv">整理上周竞品调研，输出一页纸</div>
-      <div class="side-conv">把这份 PDF 拆成 5 条小红书</div>
-      <div class="side-conv">每天早八汇总科技要闻</div>
-      <div class="side-conv">给 Q2 数据做可视化看板</div>
-      <div class="side-conv">批量改写 30 条商品文案</div>
-      <div class="side-foot"><span class="av">L</span><span style="font-size:13px;color:var(--gray)">Lin · 个人版</span></div>
-    </div>
-    <!-- center -->
-    <div class="app-pane app-center">
-      <div class="center-tabs">
-        <span class="tab on">新对话</span>
-        <span class="tab">竞品调研 · 运行中</span>
-        <span class="tab">周报汇总</span>
-      </div>
-      <div class="center-body">
-        <div class="pin"><svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
-        <div class="greet">下午好，今天想让 BA 跑点什么？</div>
-        <div class="composer">
-          <div class="ph">描述一个目标，BA 会自己拆步骤、调工具、把结果交给你…</div>
-          <div class="composer-row">
-            <div class="composer-tools">
-              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14"/></svg>
-              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15V7a2 2 0 0 0-2-2H8L3 9v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2Z"/></svg>
-              <svg fill="none" viewBox="0 0 24 24" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
-            </div>
-            <span class="model"><span class="dot"></span>Opus 4.7</span>
-          </div>
-        </div>
-        <div class="pills">
-          <span class="pill on">自动跑</span>
-          <span class="pill">写作</span><span class="pill">PPT</span>
-          <span class="pill">调研报告</span><span class="pill">数据分析</span>
-          <span class="pill">视频</span><span class="pill">设计</span>
-          <span class="pill">表格</span><span class="pill">编程</span>
-        </div>
-      </div>
-    </div>
-    <!-- right -->
-    <div class="app-pane app-files">
-      <div class="files-head"><span>工作区 · 产出</span><span>＋</span></div>
-      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M6 4h7l5 5v11H6z"/></svg>调研报告_v3.pdf</div>
-      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16"/></svg>竞品对比.xlsx</div>
-      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>一页纸总结.md</div>
-      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="m4 16 5-6 4 4 3-4 4 6z"/><circle cx="8" cy="7" r="1.6"/></svg>看板_配图.png</div>
-      <div class="file indent"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6"/></svg>素材_01.md</div>
-      <div class="file indent"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 4h14v16H5z"/><path d="M9 8h6M9 12h6"/></svg>素材_02.md</div>
-      <div class="file"><svg class="fi go" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10 8l6 4-6 4z"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>讲解_demo.mp4</div>
-      <div class="file"><svg class="fi g" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 4h8l3 4v12H5V8z"/></svg>会议纪要.md</div>
-    </div>
+  <div class="shot-toggle reveal" role="group" aria-label="界面主题切换">
+    <button class="st-btn on" data-shot="light">浅色界面</button>
+    <button class="st-btn" data-shot="dark">深色界面</button>
+  </div>
+  <div class="shot-frame reveal">
+    <img id="shotImg" src="assets/showcase-light.png" alt="BigApple Agent 工作台界面" loading="lazy"/>
   </div>
 </section>
 
@@ -503,17 +457,7 @@
   </div>
 </section>
 
-<!-- ===== VOICES ===== -->
-<section class="block" id="voices">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow">User voices</span>
-      <h2>来自使用者的声音</h2>
-      <p style="font-size:14px;color:var(--gray-soft)">以下为产品体验示意，正式上线后将替换为真实用户反馈。</p>
-    </div>
-    <div class="voices" id="voices"></div>
-  </div>
-</section>
+
 
 <!-- ===== FAQ ===== -->
 <section class="block" id="faq">
@@ -522,36 +466,48 @@
       <span class="eyebrow">FAQ</span>
       <h2>常见问题</h2>
     </div>
-    <div class="faq" id="faq"></div>
+    <div class="faq" id="faqList"></div>
   </div>
 </section>
 
-<!-- ===== CLOSING CTA ===== -->
-<section class="closing" id="start">
+<!-- ===== ORIGIN / ABOUT ===== -->
+<section class="block origin" id="origin">
   <div class="wrap">
-    <div class="closing-box reveal">
-      <h2>把今天的活，交给 BA</h2>
-      <p>免费开始，几分钟内跑通你的第一个自主任务。</p>
-      <a class="btn btn-solid" href="#">立即免费开始</a>
+    <div class="sec-head reveal">
+      <span class="eyebrow">Origin · 我们从哪里来</span>
+      <h2>由人与智能体，共同构建</h2>
+      <p class="lead">BigApple 诞生于 <strong>HackathonWeekly</strong>——国内领先的 AI 产品共创社区。从一个周末黑客松，走到今天的产品。我们信奉"先做出来，再想清楚"，正是这套黑客松基因，让 BA 从第一天起就为真实生产力而生。</p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal d1"><div class="n">6000+</div><div class="l">社区成员</div></div>
+      <div class="stat reveal d2"><div class="n">200+</div><div class="l">场活动沉淀</div></div>
+      <div class="stat reveal d3"><div class="n">50+</div><div class="l">孵化项目</div></div>
+    </div>
+    <div class="values">
+      <div class="val reveal d1"><div class="en">Ship it &gt; Think it</div><h4>先做出来，再想清楚</h4></div>
+      <div class="val reveal d2"><div class="en">One MVP per week</div><h4>每周一个 MVP</h4></div>
+      <div class="val reveal d3"><div class="en">Co-create &gt; Solo</div><h4>共创大于单干</h4></div>
+      <div class="val reveal d4"><div class="en">AI-native thinking</div><h4>AI 原生思维</h4></div>
     </div>
   </div>
 </section>
+
 
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="b"><img src="assets/logo.svg" alt=""/>bigppale</div>
-        <p>bigppale（简称 BA）是一个自主 AI 工作代理。我们希望用智能把人从重复劳动里解放出来，让每一个创造者都拥有一支随叫随到的执行团队。</p>
+        <div class="b"><img src="assets/ba-mark-black-512.png" alt="BigApple"/>BigApple</div>
+        <p>BigApple（简称 BA）是一个自主 AI 工作代理。我们希望用智能把人从重复劳动里解放出来，让每一个创造者都拥有一支随叫随到的执行团队。</p>
       </div>
-      <div class="foot-col"><h4>产品</h4><a href="#capabilities">能力清单</a><a href="#skills">技能库</a><a href="#start">下载中心</a><a href="#trust">企业版</a></div>
+      <div class="foot-col"><h4>产品</h4><a href="#capabilities">能力清单</a><a href="#skills">技能库</a><a href="#trust">企业版</a></div>
       <div class="foot-col"><h4>资源</h4><a href="#">BA 学院</a><a href="#">开发文档</a><a href="#">交流社群</a></div>
       <div class="foot-col"><h4>法律</h4><a href="#">隐私政策</a><a href="#">服务条款</a><a href="#">安全说明</a></div>
       <div class="foot-col"><h4>关于</h4><a href="#">产品故事</a><a href="#">团队</a><a href="#">联系我们</a><a href="#">加入我们</a></div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 bigppale (BA). All rights reserved.</span>
+      <span>© 2026 BigApple (BA). All rights reserved.</span>
       <span>Built with care.</span>
     </div>
   </div>
@@ -574,31 +530,6 @@
   }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // testimonials (clearly illustrative placeholders)
-  const avColors = ['#2d4739','#8c7851','#3a5a47','#a79167','#4a6b55','#9a7d4e'];
-  const voices = [
-    ['本地跑通这点太顶了','整套流程不出本地，老板和合规都点头，再也不用为数据去哪儿提心吊胆。','合规打工人 · 金融'],
-    ['一个人扛起一条线','从调研到出稿，BA 把脏活累活全包了，我只做判断，产出比之前翻了一倍。','独立创业者'],
-    ['周报终于不用我写了','设成每周五定时跑，数据自己汇总、自己排版，到点推到我群里，省心。','互联网 PM'],
-    ['做 PPT 不再熬夜','给个提纲，结构、配图、措辞它一口气搞定，我只改两页就能上会。','咨询顾问'],
-    ['合同初审快了好几倍','批量过条款、标出风险点，把律师从重复阅读里解放出来。','执业律师'],
-    ['内容产能直接拉满','一个选题自动拆成多平台版本，公众号转小红书顺手就出，更新效率翻倍。','日更创作者'],
-    ['财务月结轻松了','凭证整理、表格生成、异常标注一条龙，月底不再加班到深夜。','企业会计'],
-    ['会议纪要一键搞定','开会全程转写，结束就有纪要和待办，决策点一个不落。','项目负责人'],
-    ['本地语音处理很安心','访谈录音在本机转写归纳，敏感内容不出门，效率还在线。','研究学者'],
-    ['多模型随手切','简单任务用便宜的，硬骨头切高配，效果和成本我自己拿捏。','全栈开发者'],
-    ['数据看板自动出','把表格丢进去，清洗分析出图全自动，分析的时间省下大半。','数据分析师'],
-    ['团队提效神器','把重复流程交给定时作业，团队腾出手做真正重要的事。','效率极客'],
-  ];
-  const vc = document.getElementById('voices');
-  voices.forEach((v,i) => {
-    const name = v[2].split(' · ')[0];
-    const el = document.createElement('div');
-    el.className = 'voice';
-    el.innerHTML = `<div class="vh">${v[0]}</div><p>${v[1]}</p>
-      <div class="who"><span class="av" style="background:${avColors[i%avColors.length]}">${name.slice(0,1)}</span><span>${v[2]}</span></div>`;
-    vc.appendChild(el);
-  });
 
   // faq accordion
   const faqs = [
@@ -609,7 +540,7 @@
     ['可以定时自动跑吗？','可以。把任务设成定时或由事件触发，BA 会在后台自动作业，跑完通过飞书、企业微信或 Webhook 把结果推送给你。'],
     ['怎么开始使用？','点击"免费开始"创建账号即可。新用户有免费额度，几分钟就能跑通你的第一个自主任务，无需信用卡。'],
   ];
-  const fc = document.getElementById('faq');
+  const fc = document.getElementById('faqList');
   faqs.forEach((f) => {
     const item = document.createElement('div');
     item.className = 'qa';
@@ -621,6 +552,23 @@
       const open = item.classList.contains('open');
       document.querySelectorAll('.qa.open').forEach(o => { o.classList.remove('open'); o.querySelector('.qa-a').style.maxHeight = null; });
       if (!open){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+    });
+  });
+
+
+  // showcase light/dark toggle
+  const shotImg = document.getElementById('shotImg');
+  const shotSrc = { light:'assets/showcase-light.png', dark:'assets/showcase-dark.png' };
+  document.querySelectorAll('.st-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('on')) return;
+      document.querySelectorAll('.st-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const next = shotSrc[btn.dataset.shot];
+      shotImg.style.opacity = '0';
+      const pre = new Image();
+      pre.onload = () => { shotImg.src = next; shotImg.style.opacity = '1'; };
+      pre.src = next;
     });
   });
 </script>

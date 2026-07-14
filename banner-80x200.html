@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<title>BigApple — 易拉宝 80×200cm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500&amp;family=Inter:wght@400;500;600&amp;family=Noto+Serif+SC:wght@500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f9f7f2;
+    --card: #fffefb;
+    --ink: #1a1a1a;
+    --green: #2d4739;
+    --green-deep: #181b19;
+    --green-mid: #3a5a47;
+    --gray: #4a4a4a;
+    --gray-soft: #6c6c66;
+    --gold: #8c7851;
+    --gold-light: #a79167;
+    --gold-bright: #c8a96a;
+    --line: rgba(45,71,57,.12);
+    --line-soft: rgba(45,71,57,.08);
+    --serif: "Playfair Display","Noto Serif SC",Georgia,serif;
+    --cjk-serif: "Noto Serif SC","Songti SC",serif;
+    --sans: Inter,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+
+  @page { size: 800mm 2000mm; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .banner {
+    width: 800mm;
+    height: 2000mm;
+    padding: 46mm 54mm 38mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* 章节小标题（居中 + 两侧短线） */
+  .b-sec-head {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14mm; margin-bottom: 20mm;
+  }
+  .b-sec-head::before, .b-sec-head::after {
+    content: ""; width: 36mm; height: 2px; background: var(--line);
+  }
+  .b-sec-head span {
+    font-family: var(--cjk-serif);
+    font-size: 31pt; font-weight: 700; color: var(--green);
+    letter-spacing: .04em; white-space: nowrap;
+  }
+
+  /* ===== 1. 品牌栏 ===== */
+  .b-brandbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 16mm;
+    border-bottom: 1.5px solid var(--line);
+    flex-shrink: 0;
+  }
+  .b-brand { display: flex; align-items: center; gap: 9mm; }
+  .b-brand img { height: 34mm; width: auto; }
+  .b-brand-name {
+    font-family: var(--serif);
+    font-size: 40pt; font-weight: 700;
+    color: var(--green); letter-spacing: -0.01em;
+  }
+  .b-badge {
+    font-size: 13pt; font-weight: 600;
+    letter-spacing: .18em; color: var(--gold);
+    font-family: var(--sans);
+    border: 2px solid var(--gold);
+    border-radius: 5px; padding: 1.5mm 5mm;
+  }
+  .b-brand-sub {
+    font-size: 17pt; color: var(--gray-soft);
+    font-weight: 500; letter-spacing: .04em;
+  }
+
+  /* ===== 2. Hero ===== */
+  .b-hero {
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .b-tagline {
+    font-family: var(--cjk-serif);
+    font-size: 80pt; font-weight: 700;
+    color: var(--green);
+    line-height: 1.26; letter-spacing: .03em;
+    margin-bottom: 16mm;
+  }
+  .b-tagline em { font-style: normal; color: var(--gold); }
+  .b-sub {
+    font-size: 23pt; color: var(--gray);
+    line-height: 1.65; max-width: 560mm; margin: 0 auto 9mm;
+  }
+  .b-sub-strong {
+    font-size: 24pt; color: var(--green); font-weight: 600;
+    line-height: 1.5; max-width: 560mm; margin: 0 auto;
+  }
+  .b-sub-strong b { color: var(--gold); font-weight: 700; }
+
+  /* ===== 3. 工作流程图 ===== */
+  .b-flow { flex-shrink: 0; }
+  .b-flow-top { display: flex; gap: 14mm; align-items: stretch; }
+  .b-fcard {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 7mm;
+    padding: 16mm 18mm;
+  }
+  .b-fcard-cmd { flex: 0 0 215mm; display: flex; flex-direction: column; }
+  .b-fcard-plan { flex: 1; }
+  .b-fstep {
+    display: flex; align-items: center; gap: 5mm; margin-bottom: 8mm;
+  }
+  .b-fstep-num {
+    font-family: var(--serif); font-size: 20pt; font-weight: 700;
+    color: var(--gold);
+  }
+  .b-fstep-label {
+    font-size: 17pt; font-weight: 600; color: var(--green);
+    letter-spacing: .02em;
+  }
+  .b-fcmd-bubble {
+    background: var(--bg);
+    border: 1.5px solid var(--line-soft);
+    border-radius: 5mm;
+    padding: 10mm 11mm;
+    font-size: 19pt; color: var(--ink); line-height: 1.45;
+    flex: 1; display: flex; align-items: center;
+  }
+  .b-plan-tags {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7mm 8mm;
+  }
+  .b-plan-tag {
+    display: flex; align-items: center; gap: 4mm;
+    font-size: 16pt; color: var(--gray); font-weight: 500;
+  }
+  .b-plan-tag svg { width: 7mm; height: 7mm; color: var(--gold); flex-shrink: 0; }
+
+  .b-flow-conn {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 9mm 0;
+  }
+  .b-flow-conn .pill {
+    font-size: 14pt; font-weight: 600; letter-spacing: .1em;
+    color: var(--green); background: rgba(45,71,57,.07);
+    padding: 2mm 7mm; border-radius: 20mm; margin-bottom: 3mm;
+    display: flex; align-items: center; gap: 3mm;
+  }
+  .b-flow-conn .pill .dot {
+    width: 3mm; height: 3mm; border-radius: 50%; background: var(--green);
+  }
+  .b-flow-conn svg { width: 9mm; height: 9mm; color: var(--green); opacity: .5; }
+
+  .b-flow-screen { position: relative; }
+  .b-flow-screen img {
+    width: 100%; max-width: 585mm;
+    border-radius: 7mm; border: 1.5px solid var(--line);
+    box-shadow: 0 5mm 26mm rgba(0,0,0,.07);
+    display: block; margin: 0 auto;
+  }
+
+  .b-deliver {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 14mm;
+    background: var(--green); border-radius: 7mm;
+    padding: 13mm 18mm; color: #fff;
+  }
+  .b-deliver-left { display: flex; align-items: center; gap: 8mm; }
+  .b-deliver-left svg { width: 14mm; height: 14mm; color: var(--gold-bright); flex-shrink: 0; }
+  .b-deliver-step { font-size: 14pt; color: var(--gold-bright); font-weight: 600; letter-spacing: .12em; margin-bottom: 2mm; }
+  .b-deliver-title { font-family: var(--cjk-serif); font-size: 22pt; font-weight: 700; color: #fff; }
+  .b-deliver-files { display: flex; gap: 5mm; }
+  .b-deliver-files span {
+    font-size: 13pt; font-weight: 600; letter-spacing: .05em;
+    color: rgba(255,255,255,.92);
+    border: 1.5px solid rgba(255,255,255,.4);
+    border-radius: 4mm; padding: 2mm 5mm;
+  }
+
+  /* ===== 4. 核心能力 ===== */
+  .b-caps { flex-shrink: 0; }
+  .b-caps-grid { display: flex; gap: 10mm; }
+  .b-cap {
+    flex: 1; background: var(--card);
+    border: 1.5px solid var(--line); border-radius: 7mm;
+    padding: 20mm 9mm; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .b-cap-icon {
+    width: 30mm; height: 30mm; margin-bottom: 11mm;
+    border-radius: 50%; background: rgba(140,120,81,.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .b-cap-icon svg { width: 15mm; height: 15mm; color: var(--green); }
+  .b-cap-title {
+    font-family: var(--cjk-serif); font-size: 19pt; font-weight: 700;
+    color: var(--green); margin-bottom: 6mm; line-height: 1.3;
+  }
+  .b-cap-desc { font-size: 13.5pt; color: var(--gray-soft); line-height: 1.5; }
+
+  /* ===== 5. 真实案例 ===== */
+  .b-cases { flex-shrink: 0; }
+  .b-cases-grid { display: flex; gap: 14mm; }
+  .b-case {
+    flex: 1; background: var(--card);
+    border: 1.5px solid var(--line); border-radius: 7mm;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .b-case-img { width: 100%; aspect-ratio: 4/3; overflow: hidden; }
+  .b-case-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .b-case-body { padding: 14mm 15mm 16mm; }
+  .b-case-tag {
+    font-size: 13pt; font-weight: 600; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 5mm;
+  }
+  .b-case-title {
+    font-family: var(--cjk-serif); font-size: 22pt; font-weight: 700;
+    color: var(--green); margin-bottom: 6mm; line-height: 1.3;
+  }
+  .b-case-desc { font-size: 16pt; color: var(--gray-soft); line-height: 1.5; }
+
+  /* ===== 6. 为谁而生 ===== */
+  .b-persona { flex-shrink: 0; }
+  .b-persona-row { display: flex; gap: 14mm; }
+  .b-pcard {
+    flex: 1; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .b-pcard-icon {
+    width: 36mm; height: 36mm; margin-bottom: 10mm;
+    border-radius: 50%; border: 2px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .b-pcard-icon svg { width: 18mm; height: 18mm; color: var(--green); }
+  .b-pcard-title {
+    font-family: var(--cjk-serif); font-size: 21pt; font-weight: 700;
+    color: var(--green); line-height: 1.3;
+  }
+  .b-persona-sub {
+    text-align: center; font-size: 18pt; color: var(--gray);
+    line-height: 1.6; margin-top: 22mm;
+  }
+  .b-persona-sub b { color: var(--green); font-weight: 600; }
+
+  /* ===== 7. CTA + Hook ===== */
+  .b-cta { flex-shrink: 0; }
+  .b-cta-head {
+    text-align: center; font-family: var(--cjk-serif);
+    font-size: 56pt; font-weight: 800; color: var(--green);
+    letter-spacing: .03em; margin-bottom: 22mm;
+  }
+  .b-cta-head em { font-style: normal; color: var(--gold); }
+  .b-hook {
+    background: var(--green); border-radius: 11mm;
+    padding: 30mm 40mm; color: var(--bg);
+    display: flex; align-items: center; justify-content: space-between; gap: 24mm;
+  }
+  .b-hook-left { text-align: left; }
+  .b-hook-text {
+    font-family: var(--cjk-serif); font-size: 34pt; font-weight: 700;
+    color: #fff; margin-bottom: 7mm; line-height: 1.3;
+  }
+  .b-hook-sub { font-size: 19pt; color: rgba(255,255,255,.8); line-height: 1.5; }
+  .b-hook-right { display: flex; align-items: center; gap: 12mm; flex-shrink: 0; }
+  .b-qr-placeholder {
+    width: 92mm; height: 92mm; background: #fff; border-radius: 6mm;
+    padding: 4mm;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .b-qr-placeholder img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .b-qr-info { text-align: left; }
+  .b-qr-cta { font-size: 22pt; font-weight: 700; color: var(--gold-bright); margin-bottom: 4mm; }
+  .b-qr-detail { font-size: 16pt; color: rgba(255,255,255,.78); line-height: 1.55; }
+
+  /* ===== 8. 底部 ===== */
+  .b-footer {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; gap: 7mm;
+    opacity: .45;
+  }
+  .b-footer img { height: 13mm; }
+  .b-footer-text { font-size: 16pt; color: var(--gray-soft); letter-spacing: .05em; }
+
+  /* ===== 屏幕预览 ===== */
+  @media screen {
+    html { background: #d5d2cc; }
+    body { display: flex; justify-content: center; padding: 20px 0; }
+    .banner { zoom: 0.24; box-shadow: 0 10px 60px rgba(0,0,0,.15); }
+  }
+  @media print { body { background: none; } }
+</style>
+</head>
+<body>
+
+<div class="banner">
+
+  <!-- 1. 品牌栏 -->
+  <div class="b-brandbar">
+    <div class="b-brand">
+      <img src="assets/ba-mark-black-512.png" alt="BA"/>
+      <span class="b-brand-name">BigApple</span>
+      <span class="b-badge">BA</span>
+    </div>
+    <span class="b-brand-sub">自主 AI 工作 Agent</span>
+  </div>
+
+  <!-- 2. Hero -->
+  <div class="b-hero">
+    <h1 class="b-tagline">交给 <em>BA</em>，<br/>剩下的它自己跑完</h1>
+    <p class="b-sub">一个会自己拆解目标、调度工具、规划—执行—交付的 AI 工作代理。</p>
+    <p class="b-sub-strong">你只负责<b>拍板</b>，BA 负责把事情<b>推进到底</b>。</p>
+  </div>
+
+  <!-- 3. 工作流程图 -->
+  <div class="b-flow">
+    <div class="b-flow-top">
+      <div class="b-fcard b-fcard-cmd">
+        <div class="b-fstep">
+          <span class="b-fstep-num">01</span>
+          <span class="b-fstep-label">你的指令</span>
+        </div>
+        <div class="b-fcmd-bubble">"帮我做一份<br/>行业研究报告"</div>
+      </div>
+      <div class="b-fcard b-fcard-plan">
+        <div class="b-fstep">
+          <span class="b-fstep-num">02</span>
+          <span class="b-fstep-label">自主规划 · 调度工具</span>
+        </div>
+        <div class="b-plan-tags">
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M16 16l4 4"/></svg>搜索检索</span>
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" stroke-linecap="round"/></svg>数据分析</span>
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 13h6M9 17h6"/></svg>文档生成</span>
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 12V4M12 12l6 4"/></svg>图表可视化</span>
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7l2-2h5l2 2h7v12H3z"/></svg>资料整理</span>
+          <span class="b-plan-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M8 12l3 3 5-6"/></svg>核对优化</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="b-flow-conn">
+      <span class="pill"><span class="dot"></span>运行中</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v15M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="b-flow-screen">
+      <img src="assets/desktop-app-light.png" alt="BigApple Agent 工作台"/>
+    </div>
+
+    <div class="b-flow-conn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v15M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+    <div class="b-deliver">
+      <div class="b-deliver-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>
+        <div>
+          <div class="b-deliver-step">03 · 交付结果</div>
+          <div class="b-deliver-title">行业研究报告</div>
+        </div>
+      </div>
+      <div class="b-deliver-files">
+        <span>PDF</span><span>Excel</span><span>Word</span><span>PPT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 核心能力 -->
+  <div class="b-caps">
+    <div class="b-sec-head"><span>重新定义你的执行力</span></div>
+    <div class="b-caps-grid">
+      <div class="b-cap">
+        <div class="b-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></div>
+        <div class="b-cap-title">目标拆解<br/>与规划</div>
+        <div class="b-cap-desc">一句需求，自动拆成可执行步骤</div>
+      </div>
+      <div class="b-cap">
+        <div class="b-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3.1"/><path d="M19.1 14.9a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 0 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-cap-title">全流程<br/>自动执行</div>
+        <div class="b-cap-desc">调研、检索、生成、整理、核对一气呵成</div>
+      </div>
+      <div class="b-cap">
+        <div class="b-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="7" r="2.3"/><circle cx="19" cy="7" r="2.3"/><circle cx="12" cy="17.5" r="2.3"/><path d="M7.2 7.5h9.6M6.7 8.8l4 7M17.3 8.8l-4 7" stroke-linecap="round"/></svg></div>
+        <div class="b-cap-title">多模型<br/>自由切换</div>
+        <div class="b-cap-desc">支持 Claude / GPT / Gemini / Qwen / DeepSeek 等</div>
+      </div>
+      <div class="b-cap">
+        <div class="b-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9.5 14.5l5-5M8.5 11l-2.2 2.2a3.1 3.1 0 0 0 4.4 4.4l2.2-2.2M15.5 13l2.2-2.2a3.1 3.1 0 0 0-4.4-4.4L11.1 8.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-cap-title">工具与<br/>应用联动</div>
+        <div class="b-cap-desc">打通 PDF、Excel、PPT、Word 与音视频工作流</div>
+      </div>
+      <div class="b-cap">
+        <div class="b-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 9.5a6 6 0 0 1 12 0c0 4.5 2 5.5 2 5.5H4s2-1 2-5.5Z" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke-linecap="round"/></svg></div>
+        <div class="b-cap-title">定时作业<br/>与通知</div>
+        <div class="b-cap-desc">支持定时运行、触发执行与结果推送</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 真实案例 -->
+  <div class="b-cases">
+    <div class="b-sec-head"><span>真实案例 · Showcase</span></div>
+    <div class="b-cases-grid">
+      <div class="b-case">
+        <div class="b-case-img"><img src="assets/showcase/starter-a-reimburse.jpg" alt="报销凭证"/></div>
+        <div class="b-case-body">
+          <div class="b-case-tag">技能演示</div>
+          <div class="b-case-title">报销凭证整理</div>
+          <div class="b-case-desc">53 张购物截图，一键变成一份规整的 Excel 交付物。</div>
+        </div>
+      </div>
+      <div class="b-case">
+        <div class="b-case-img"><img src="assets/showcase/starter-b-xhs.jpg" alt="小红书增长"/></div>
+        <div class="b-case-body">
+          <div class="b-case-tag">技能演示</div>
+          <div class="b-case-title">小红书增长</div>
+          <div class="b-case-desc">低互动笔记自动改写，从 9 赞做到 5,771 赞。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 为谁而生 -->
+  <div class="b-persona">
+    <div class="b-sec-head"><span>为谁而生</span></div>
+    <div class="b-persona-row">
+      <div class="b-pcard">
+        <div class="b-pcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0" stroke-linecap="round"/></svg></div>
+        <div class="b-pcard-title">被琐事拖住的<br/>多面手</div>
+      </div>
+      <div class="b-pcard">
+        <div class="b-pcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="8" r="3.1"/><path d="M3.5 19.5a5.5 5.5 0 0 1 11 0" stroke-linecap="round"/><path d="M15.5 5.5a3.1 3.1 0 0 1 0 5.6M16.5 14.6a5.5 5.5 0 0 1 4 4.9" stroke-linecap="round"/></svg></div>
+        <div class="b-pcard-title">一个人就是<br/>一支队伍</div>
+      </div>
+      <div class="b-pcard">
+        <div class="b-pcard-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 14v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" stroke-linecap="round"/><path d="M12 3.5v11M8.2 7l3.8-3.5L15.8 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="b-pcard-title">把重复劳动<br/>外包出去</div>
+      </div>
+    </div>
+    <p class="b-persona-sub">独立开发者、自由职业者、内容创作者、个人创业者，<br/>都可以把高频杂务交给 <b>BA</b>。</p>
+  </div>
+
+  <!-- 7. CTA + Hook -->
+  <div class="b-cta">
+    <div class="b-cta-head">把今天的活，交给 <em>BA</em></div>
+    <div class="b-hook">
+      <div class="b-hook-left">
+        <div class="b-hook-text">扫码添加微信<br/>领取内测码</div>
+        <div class="b-hook-sub">抢先体验 BigApple Agent 全部能力，免费试用。</div>
+      </div>
+      <div class="b-hook-right">
+        <div class="b-qr-placeholder"><img src="assets/wechat-qr.png" alt="微信二维码"/></div>
+        <div class="b-qr-info">
+          <div class="b-qr-cta">添加微信</div>
+          <div class="b-qr-detail">领取内测码<br/>免费体验</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. 底部 -->
+  <div class="b-footer">
+    <img src="assets/ba-mark-black-512.png" alt="BA"/>
+    <span class="b-footer-text">自主 AI 工作代理 · BigApple（BA） · bigapple.store</span>
+  </div>
+
+</div>
+
+</body>
+</html>
